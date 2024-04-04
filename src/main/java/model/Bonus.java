@@ -4,10 +4,7 @@ import view.ExceptionMessage;
 import static constant.LottoConstants.*;
 
 public class Bonus {
-    private int bonus;
-
-    private Bonus(){
-    }
+    private final int number;
 
     public Bonus(String number) {
         this(Integer.parseInt(number));
@@ -15,7 +12,7 @@ public class Bonus {
 
     public Bonus(int number) {
         rangeNumberCheck(number);
-        this.bonus = number;
+        this.number = number;
     }
 
     private void rangeNumberCheck(int number) {
@@ -25,8 +22,7 @@ public class Bonus {
         }
     }
 
-    public int getBonus() {
-        return this.bonus;
+    public int getNumber() {
+        return number;
     }
-
 }
