@@ -1,13 +1,12 @@
 package view;
 
+import model.vo.LottoBall;
 import java.util.List;
-
 import static constant.LottoConstants.*;
-import model.*;
 
-public class Validator {
+public class InputValidator {
 
-    private Validator() {
+    private InputValidator() {
     }
 
     public static void checkZeroNumber(int paymentAmount) {
@@ -32,14 +31,6 @@ public class Validator {
             throw new IllegalArgumentException();
         }
     }
-
-    public static void numberSizeCheck(Numbers numbers) {
-        if (numbers.getSize() != NUMBER_COUNT) {
-            ExceptionMessage.sizeException();
-            throw new IllegalArgumentException();
-        }
-    }
-
     public static void numberSizeCheck(List<Integer> numbers) {
         if (numbers.size() != NUMBER_COUNT) {
             ExceptionMessage.sizeException();
@@ -50,6 +41,13 @@ public class Validator {
     public static void rangeNumberCheck(int number) {
         if (number < NUMBER_LOWER_BOUND || number > NUMBER_UPPER_BOUND) {
             ExceptionMessage.rangeException();
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static void lottoBallSizeCheck(List<LottoBall> lottoBalls) {
+        if (lottoBalls.size() != NUMBER_COUNT) {
+            ExceptionMessage.sizeException();
             throw new IllegalArgumentException();
         }
     }

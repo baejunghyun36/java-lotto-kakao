@@ -2,6 +2,7 @@ package view;
 
 import java.util.Scanner;
 import static constant.LottoConstants.*;
+
 public class InputView {
     private static final Scanner SCANNER = new Scanner(System.in);
 
@@ -11,9 +12,9 @@ public class InputView {
     public static int readPaymentAmount() {
         System.out.println(INPUT_PAYMENT_AMOUNT);
         String input = SCANNER.nextLine();
-        int paymentAmount = Validator.checkTypeNumber(input);
-        Validator.checkZeroNumber(paymentAmount);
-        Validator.checkUnitNumber(paymentAmount);
+        int paymentAmount = InputValidator.checkTypeNumber(input);
+        InputValidator.checkZeroNumber(paymentAmount);
+        InputValidator.checkUnitNumber(paymentAmount);
         return paymentAmount;
     }
 
