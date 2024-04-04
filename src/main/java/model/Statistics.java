@@ -2,40 +2,58 @@ package model;
 
 import constant.Reward;
 import java.util.*;
-
+import java.util.stream.Collectors;
 import static constant.LottoConstants.*;
 
 public class Statistics {
     private Map<Reward, Integer> result;
-    private int paymentAmount;
+    private int userLottoCount;
 
-    private Statistics() {
+    public Statistics(UserLotto userLotto, WinningLotto winningLotto) {
+        generateResultMap();
+        userLottoCount = ONE;
+        updateResult(userLotto, winningLotto);
     }
 
-    public Statistics(int paymentAmount) {
-        result = new HashMap<>();
+    public Statistics(List<UserLotto> userLottos, WinningLotto winningLotto) {
         generateResultMap();
-        this.paymentAmount = paymentAmount;
+        userLottoCount = userLottos.size();
+        calculateResult(userLottos, winningLotto);
     }
 
     private void generateResultMap() {
-        result.put(Reward.FIRST, 0);
-        result.put(Reward.SECOND, 0);
-        result.put(Reward.THIRD, 0);
-        result.put(Reward.FOURTH, 0);
-        result.put(Reward.FIFTH, 0);
+        result = Arrays.stream(Reward.values())
+                .collect(Collectors.toMap(reward -> reward, reward -> 0));
     }
 
-    public void updateResult(int correctNumbersCount, boolean bonus){
-        Arrays.stream(Reward.values())
+    public void calculateResult(List<UserLotto> userLottos, WinningLotto winningLotto) {
+        for (UserLotto userLotto : userLottos) {
+            updateResult(userLotto, winningLotto);
+        }
+    }
+
+    public Reward updateResult(UserLotto userLotto, WinningLotto winningLotto){
+        long cnt = winningLotto.getBalls().stream()
+                .filter(userLotto.getBalls()::contains)
+                .count();
+        boolean bonus = userLotto.getBalls().stream()
+                .anyMatch(ball -> ball.getNumber() == winningLotto.getBonus().getNumber());
+        return updateResult((int)cnt, bonus);
+    }
+
+    public Reward updateResult(int correctNumbersCount, boolean bonus){
+        Optional<Reward> matchedReward = Arrays.stream(Reward.values())
                 .filter(reward -> (reward.getMatchCount() == correctNumbersCount) && (!reward.getBonus() || bonus))
-                .findFirst()
-                .ifPresent(reward -> result.put(reward, result.get(reward) + 1));
-    }
+                .findFirst();
 
+        matchedReward
+                .ifPresent(reward -> result.put(reward, result.get(reward) + 1));
+
+        return matchedReward.orElse(null);
+    }
 
     public double getStatistics() {
-        if (paymentAmount < LOTTO_PRICE) {
+        if (userLottoCount == ZERO) {
             return 0;
         }
 
@@ -43,7 +61,7 @@ public class Statistics {
                 .mapToInt(reward -> reward.getPrice() * result.get(reward))
                 .sum();
 
-        return (double) rewardAmount / paymentAmount;
+        return (double) rewardAmount / (userLottoCount * LOTTO_PRICE);
     }
 
     public Map<Reward, Integer> getResult(){
