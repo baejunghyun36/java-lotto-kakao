@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 public class StatisticsTest {
-    UserLotto userLotto;
+    List<UserLotto> userLottos;
 
     @BeforeEach
     void setUp() {
-        userLotto = new UserLotto(List.of(1, 2, 3, 4, 5, 6));
+        userLottos = new ArrayList<>();
+        userLottos.add(new UserLotto(List.of(1, 2, 3, 4, 5, 6)));
     }
 
     @ParameterizedTest
@@ -34,7 +35,7 @@ public class StatisticsTest {
         int bonusNumber = argumentsAccessor.getInteger(2);
 
         WinningLotto winningLotto = new WinningLotto(winningNumbers, new Bonus(bonusNumber));
-        Map<Reward, Integer> actual = new Statistics(userLotto, winningLotto).getResult();
+        Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto).getResult();
 
         AssertionsForClassTypes.assertThat(actual.get(result)).isEqualTo(1);
     }
@@ -53,8 +54,6 @@ public class StatisticsTest {
         int bonusNumber = argumentsAccessor.getInteger(2);
 
         WinningLotto winningLotto = new WinningLotto(winningNumbers, new Bonus(bonusNumber));
-        List<UserLotto> userLottos = new ArrayList<>();
-        userLottos.add(new UserLotto(List.of(1, 2, 3, 4, 5, 6)));
         userLottos.add(new UserLotto(List.of(1, 2, 3, 4, 5, 6)));
         Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto).getResult();
 
