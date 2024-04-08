@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 import static constant.LottoConstants.*;
 
 public class LottoMachineImpl implements LottoMachine {
-    private final List<Integer> lottoNumbers = IntStream.rangeClosed(NUMBER_LOWER_BOUND, NUMBER_UPPER_BOUND)
+    private static final List<Integer> lottoNumbers = IntStream.rangeClosed(NUMBER_LOWER_BOUND, NUMBER_UPPER_BOUND)
             .boxed()
             .collect(Collectors.toList());
 
