@@ -2,6 +2,7 @@ package model;
 
 import model.vo.LottoBall;
 import view.InputValidator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,5 +33,13 @@ public class UserLotto {
         return balls.stream()
                 .map(LottoBall::getNumber)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    public static UserLotto create(String input) {
+        List<Integer> numbers = Arrays.stream(input.replaceAll(" ", "").split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        return new UserLotto(numbers);
     }
 }
