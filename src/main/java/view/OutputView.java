@@ -1,9 +1,8 @@
 package view;
 
 import constant.Reward;
-import model.dto.UserLottoDTOs;
+import java.util.List;
 import java.util.Map;
-
 import static constant.LottoConstants.*;
 
 public class OutputView {
@@ -11,14 +10,13 @@ public class OutputView {
     private OutputView() {
     }
 
-    public static void printPaymentAmount(int amount) {
-        System.out.println(amount + AMOUNT_MESSAGE + "\n");
+    public static void printPurchaseAmount(int paymentAmount, int purchaseManualAmount) {
+        System.out.printf(RESULT_LOTTO_AMOUNT, purchaseManualAmount, paymentAmount - purchaseManualAmount);
     }
 
-    public static void printLottosNumbers(UserLottoDTOs userLottoDTOs) {
-        userLottoDTOs.getBalls()
-                        .forEach(userLottoDTO -> System.out.println(userLottoDTO.getNumbers().toString()));
-        System.out.println("\n");
+    public static void printLottosNumbers(List<List<Integer>> userLottos) {
+        userLottos.stream()
+                .forEach(userLotto -> System.out.println(userLotto.toString()));
     }
 
     public static void printResultList(Map<Reward, Integer> result) {
