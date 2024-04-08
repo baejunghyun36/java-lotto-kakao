@@ -1,10 +1,10 @@
 package model.vo;
 
-public class PurchaseAmount {
+public class ManualPurchaseAmount {
     private final int amount;
 
-    public PurchaseAmount(int amount) {
-        this.amount = amount;
+    public ManualPurchaseAmount(int amount) {
+        this.amount =amount;
     }
 
     public int getAmount() {
