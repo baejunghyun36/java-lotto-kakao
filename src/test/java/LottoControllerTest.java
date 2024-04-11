@@ -1,30 +1,25 @@
 import controller.LottoController;
+import model.UserLotto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LottoControllerTest {
     LottoController lottoController;
-
-    List<String> input;
-
-    @BeforeEach
-    void setUp() {
-        input = new ArrayList<>();
-        input.add("1,2,3,4,5,6");
-        lottoController = new LottoController(2, input);
-    }
-
+    List<UserLotto> userLottos;
 
     @Test
-    void 사용자_수동_로또_번호_유효성_익셉션_테스트() {
-        input.add("ak,s,1,2,3,4");
+    void 사용자_수동_로또_번호_생성_테스트() {
+        userLottos = Stream.of(List.of(1, 2, 3, 4, 5, 6), List.of(1, 2, 3, 4, 5, 6))
+                .map(UserLotto::create)
+                .collect(Collectors.toList());
 
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() ->
-                        lottoController = new LottoController(10, input)
-                );
+        lottoController = new LottoController(userLottos);
+
+        assertThat(lottoController.getUserLottos().size()).isEqualTo(2);
     }
 }
