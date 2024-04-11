@@ -21,7 +21,7 @@ public class Application {
         OutputView.printLottosNumbers(userLottos);
 
         WinningLotto winningLotto = settingWinningNumbers();
-        Statistics statistics = generateStatistics(lottoController, winningLotto);
+        Statistics statistics = generateStatistics(lottoController, winningLotto, purchaseAmount);
 
         OutputView.printResultList(statistics.getResult());
         OutputView.printResultRate(statistics.getStatistics());
@@ -45,7 +45,7 @@ public class Application {
         return new WinningLotto(winningNumbersUserInput, bonus);
     }
 
-    private static Statistics generateStatistics(LottoController lottoController, WinningLotto winningLotto) {
-        return new Statistics(lottoController.getUserLottos(), winningLotto);
+    private static Statistics generateStatistics(LottoController lottoController, WinningLotto winningLotto, PurchaseAmount purchaseAmount) {
+        return new Statistics(lottoController.getUserLottos(), winningLotto, purchaseAmount);
     }
 }

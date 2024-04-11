@@ -10,9 +10,9 @@ public class Statistics {
     private Map<Reward, Integer> result;
     private PurchaseAmount purchaseAmount;
 
-    public Statistics(List<UserLotto> userLottos, WinningLotto winningLotto) {
+    public Statistics(List<UserLotto> userLottos, WinningLotto winningLotto, PurchaseAmount purchaseAmount) {
         generateResultMap();
-        purchaseAmount = new PurchaseAmount(userLottos.size());
+        this.purchaseAmount = purchaseAmount;
         calculateResult(userLottos, winningLotto);
     }
 
@@ -31,8 +31,10 @@ public class Statistics {
         long cnt = winningLotto.getBalls().stream()
                 .filter(userLotto.getBalls()::contains)
                 .count();
+
         boolean bonus = userLotto.getBalls().stream()
                 .anyMatch(ball -> ball.getNumber() == winningLotto.getBonus().getNumber());
+
         return updateResult((int)cnt, bonus);
     }
 
@@ -48,7 +50,7 @@ public class Statistics {
     }
 
     public double getStatistics() {
-        if (purchaseAmount.getAmount() == ZERO) {
+        if (purchaseAmount.getTotalAmount() == ZERO) {
             return 0;
         }
 
@@ -56,7 +58,7 @@ public class Statistics {
                 .mapToLong(reward -> reward.getPrice() * result.get(reward))
                 .sum();
 
-        return (double) rewardAmount / (purchaseAmount.getAmount() * LOTTO_PRICE);
+        return (double) rewardAmount / (purchaseAmount.getTotalAmount() * LOTTO_PRICE);
     }
 
     public Map<Reward, Integer> getResult(){

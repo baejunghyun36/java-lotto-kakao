@@ -3,6 +3,7 @@ import model.Bonus;
 import model.Statistics;
 import model.UserLotto;
 import model.WinningLotto;
+import model.vo.PurchaseAmount;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,11 +15,13 @@ import java.util.Map;
 
 public class StatisticsTest {
     List<UserLotto> userLottos;
+    PurchaseAmount purchaseAmount;
 
     @BeforeEach
     void setUp() {
         userLottos = new ArrayList<>();
-        userLottos.add(new UserLotto(List.of(1, 2, 3, 4, 5, 6)));
+        userLottos.add(UserLotto.create(List.of(1, 2, 3, 4, 5, 6)));
+        purchaseAmount = new PurchaseAmount(0, 1);
     }
 
     @ParameterizedTest
@@ -35,7 +38,7 @@ public class StatisticsTest {
         int bonusNumber = argumentsAccessor.getInteger(2);
 
         WinningLotto winningLotto = new WinningLotto(winningNumbers, new Bonus(bonusNumber));
-        Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto).getResult();
+        Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto, purchaseAmount).getResult();
 
         AssertionsForClassTypes.assertThat(actual.get(result)).isEqualTo(1);
     }
@@ -54,8 +57,8 @@ public class StatisticsTest {
         int bonusNumber = argumentsAccessor.getInteger(2);
 
         WinningLotto winningLotto = new WinningLotto(winningNumbers, new Bonus(bonusNumber));
-        userLottos.add(new UserLotto(List.of(1, 2, 3, 4, 5, 6)));
-        Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto).getResult();
+        userLottos.add(UserLotto.create(List.of(1, 2, 3, 4, 5, 6)));
+        Map<Reward, Integer> actual = new Statistics(userLottos, winningLotto, purchaseAmount).getResult();
 
         AssertionsForClassTypes.assertThat(actual.get(result)).isEqualTo(2);
     }
