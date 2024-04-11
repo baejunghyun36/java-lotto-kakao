@@ -1,8 +1,10 @@
 package view;
 
 import constant.Reward;
+import model.UserLotto;
 import java.util.List;
 import java.util.Map;
+
 import static constant.LottoConstants.*;
 
 public class OutputView {
@@ -14,9 +16,10 @@ public class OutputView {
         System.out.printf(RESULT_LOTTO_AMOUNT, purchaseManualAmount, paymentAmount - purchaseManualAmount);
     }
 
-    public static void printLottosNumbers(List<List<Integer>> userLottos) {
+    public static void printLottosNumbers(List<UserLotto> userLottos) {
         userLottos.stream()
-                .forEach(userLotto -> System.out.println(userLotto.toString()));
+                .map(UserLotto::getLottoBallNumbers)
+                .forEach(System.out::println);
     }
 
     public static void printResultList(Map<Reward, Integer> result) {
